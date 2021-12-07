@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!-- My CSS -->
+    <link rel="stylesheet" href="src/styles.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Poppins:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- card left -->
+      <div class="row">
+        <div class="col mb-2">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Future Forecast</h5>
+              <h6 class="card-subtitle mb-2 text-muted">The next five days</h6>
+              <ul class="list-group">
+                <li class="list-group-item">MON:</li>
+                <li class="list-group-item">TUE:</li>
+                <li class="list-group-item">WED:</li>
+                <li class="list-group-item">THU:</li>
+                <li class="list-group-item">FRI:</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- card middle -->
+        <div class="col mb-2">
+          <div class="card">
+            <div class="card-body d-flex flex-column justify-content-evenly">
+              <h6 class="card-title text-muted">
+                <span class="date-time" id="weekday">Day</span>
+                <span class="date-time" id="fulldate">00/00/0000</span>
+                <span class="date-time" id="time">Time</span>
+              </h6>
+              <h1 class="card-title">
+                <span id="current-temp">17</span>
+                <span id="current-unit"> °C</span>
+              </h1>
+              <h4 class="card-title" id="current-city">Amsterdam</h4>
+            </div>
+          </div>
+        </div>
+
+        <!-- card right -->
+        <div class="col mb-2">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Detailed Info</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                For the weather enthusiast
+              </h6>
+              <ul class="list-group">
+                <li class="list-group-item">Precipitation:</li>
+                <li class="list-group-item">Wind speed:</li>
+                <li class="list-group-item">Humidity:</li>
+                <li class="list-group-item">Sunrise:</li>
+                <li class="list-group-item">Sunset:</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+
+      <!-- search bar & button -->
+      <form>
+        <div class="row">
+          <div class="col mb-3">
+            <input
+              id="search-input"
+              type="text"
+              placeholder="What is the weather like in..."
+              class="form-control"
+            />
+          </div>
+          <div class="col mb-3">
+            <input type="submit" value="Go" class="form-control btn-light" />
+          </div>
+        </div>
+      </form>
+
+      <!-- button group -->
+      <div class="row justify-content-center">
+        <button class="col-3 mx-2 btn btn-light" id="current-button">
+          Current location
+        </button>
+        <button class="col-3 mx-2 btn btn-light" id="converter-button">
+          °C to °F
+        </button>
+        <button class="col-3 mx-2 btn btn-light">Random location</button>
+      </div>
+    </div>
+    <script src="src/index.js"></script>
+  </body>
+</html>
