@@ -1,5 +1,5 @@
 body {
-  background: url("media/bluesky.jpg") no-repeat center fixed;
+  background: url("/media/bluesky.jpg") no-repeat center fixed;
   background-size: cover;
   background-color: #4b94ca;
   font-family: "Poppins", sans-serif;
