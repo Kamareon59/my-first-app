@@ -24,7 +24,7 @@ let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 let time = document.querySelector("#time");
 time.innerHTML = `${hours}:${minutes}`;
 
-// SEARCH ENGINE + REAL DATA (!!HOMEWORK WEEK 5!!)
+// SEARCH ENGINE
 function changeCity(event) {
   event.preventDefault();
   let requestedCity = document.querySelector("#search-input");
@@ -57,6 +57,7 @@ function changeWeatherData(event) {
 function getWeatherData(response) {
   let currentTemp = document.querySelector("#current-temp");
   let newTemp = Math.round(response.data.main.temp);
+
   let currentDescription = document.querySelector("#description");
   let newDescription = response.data.weather[0].description;
 
@@ -98,7 +99,7 @@ function convertTemp() {
 let converterButton = document.querySelector("#converter-button");
 converterButton.addEventListener("click", convertTemp);
 
-// HOMEWORK 5 BONUS - Current Location
+// CURRENT LOCATION
 function getGeoData(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;

@@ -67,3 +67,7 @@ h1 {
   color: #084298;
   margin-top: 20px;
 }
+
+#description:first-letter {
+  text-transform: capitalize;
+}
