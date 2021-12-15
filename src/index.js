@@ -43,7 +43,7 @@ function displayCity(response) {
   currentCity.innerHTML = requestedCity;
 }
 
-function displayTemperature(event) {
+function changeWeatherData(event) {
   event.preventDefault();
   let requestedCity = document.querySelector("#search-input");
 
@@ -51,19 +51,22 @@ function displayTemperature(event) {
   let apiKey = "047115c33e71aaba35be74cb69e006be";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${requestedCity.value}&appid=${apiKey}&units=${unit}`;
 
-  axios.get(apiUrl).then(getWeather);
+  axios.get(apiUrl).then(getWeatherData);
 }
 
-function getWeather(response) {
+function getWeatherData(response) {
   let currentTemp = document.querySelector("#current-temp");
   let newTemp = Math.round(response.data.main.temp);
+  let currentDescription = document.querySelector("#description");
+  let newDescription = response.data.weather[0].description;
 
   currentTemp.innerHTML = newTemp;
+  currentDescription.innerHTML = newDescription;
 }
 
 let searchEngine = document.querySelector("form");
 searchEngine.addEventListener("submit", changeCity);
-searchEngine.addEventListener("submit", displayTemperature);
+searchEngine.addEventListener("submit", changeWeatherData);
 
 // UNIT CONVERTER
 function convertToF(tempC) {
