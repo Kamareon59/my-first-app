@@ -2,6 +2,10 @@ a {
   color: #084298;
 }
 
+a:hover {
+  text-decoration-color: #ffcd39;
+}
+
 body {
   background: url("/media/bluesky.jpg") no-repeat center fixed;
   background-size: cover;
@@ -21,13 +25,14 @@ h1 {
 
 .btn-light {
   border: 3px solid #fff;
+  box-shadow: 2px 2px 2px #084298;
   color: #4b94ca;
 }
 
 .btn-light:hover {
   border: 3px solid #ffcd39;
   color: #084298;
-  transition: all 150ms ease-in-out;
+  transition: all 120ms ease-in-out;
 }
 
 .card {
