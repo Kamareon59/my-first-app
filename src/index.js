@@ -25,14 +25,22 @@ let time = document.querySelector("#time");
 time.innerHTML = `${hours}:${minutes}`;
 
 // SEARCH ENGINE + REAL DATA (!!HOMEWORK WEEK 5!!)
-function displayCity(event) {
+function changeCity(event) {
   event.preventDefault();
-  let currentCity = document.querySelector("#current-city");
   let requestedCity = document.querySelector("#search-input");
 
-  if (requestedCity.value) {
-    currentCity.innerHTML = requestedCity.value;
-  }
+  let unit = "metric";
+  let apiKey = "047115c33e71aaba35be74cb69e006be";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${requestedCity.value}&appid=${apiKey}&units=${unit}`;
+
+  axios.get(apiUrl).then(displayCity);
+}
+
+function displayCity(response) {
+  let currentCity = document.querySelector("#current-city");
+  let requestedCity = response.data.name;
+
+  currentCity.innerHTML = requestedCity;
 }
 
 function displayTemperature(event) {
@@ -54,7 +62,7 @@ function getWeather(response) {
 }
 
 let searchEngine = document.querySelector("form");
-searchEngine.addEventListener("submit", displayCity);
+searchEngine.addEventListener("submit", changeCity);
 searchEngine.addEventListener("submit", displayTemperature);
 
 // UNIT CONVERTER
