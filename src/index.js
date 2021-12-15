@@ -61,8 +61,16 @@ function getWeatherData(response) {
   let currentDescription = document.querySelector("#description");
   let newDescription = response.data.weather[0].description;
 
+  let currentHumidity = document.querySelector("#humidity");
+  let newHumidity = `${response.data.main.humidity}% `;
+
+  let currentWindSpeed = document.querySelector("#wind-speed");
+  let newWindSpeed = `${Math.round(response.data.wind.speed)} m/s`;
+
   currentTemp.innerHTML = newTemp;
   currentDescription.innerHTML = newDescription;
+  currentHumidity.innerHTML = newHumidity;
+  currentWindSpeed.innerHTML = newWindSpeed;
 }
 
 let searchEngine = document.querySelector("form");
