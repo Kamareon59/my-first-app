@@ -25,7 +25,7 @@ let time = document.querySelector("#time");
 time.innerHTML = `${hours}:${minutes}`;
 
 // SEARCH ENGINE
-function changeCity(event) {
+function search(event) {
   event.preventDefault();
   let requestedCity = document.querySelector("#search-input");
 
@@ -33,6 +33,7 @@ function changeCity(event) {
   let apiKey = "047115c33e71aaba35be74cb69e006be";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${requestedCity.value}&appid=${apiKey}&units=${unit}`;
 
+  axios.get(apiUrl).then(changeWeatherData);
   axios.get(apiUrl).then(displayCity);
 }
 
@@ -43,18 +44,7 @@ function displayCity(response) {
   currentCity.innerHTML = requestedCity;
 }
 
-function changeWeatherData(event) {
-  event.preventDefault();
-  let requestedCity = document.querySelector("#search-input");
-
-  let unit = "metric";
-  let apiKey = "047115c33e71aaba35be74cb69e006be";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${requestedCity.value}&appid=${apiKey}&units=${unit}`;
-
-  axios.get(apiUrl).then(getWeatherData);
-}
-
-function getWeatherData(response) {
+function changeWeatherData(response) {
   let currentTemp = document.querySelector("#current-temp");
   let newTemp = Math.round(response.data.main.temp);
 
@@ -74,8 +64,7 @@ function getWeatherData(response) {
 }
 
 let searchEngine = document.querySelector("form");
-searchEngine.addEventListener("submit", changeCity);
-searchEngine.addEventListener("submit", changeWeatherData);
+searchEngine.addEventListener("submit", search);
 
 // UNIT CONVERTER
 function convertToF(tempC) {
