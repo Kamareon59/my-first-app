@@ -27,8 +27,18 @@ time.innerHTML = `${hours}:${minutes}`;
 // SEARCH ENGINE
 function handleInput(event) {
   event.preventDefault();
-  let requestedCity = document.querySelector("#search-input");
 
+  // Resets converter
+  let currentUnit = document.querySelector("#current-unit");
+  let button = document.querySelector("#converter-button");
+
+  if (currentUnit.innerHTML === " °F") {
+    currentUnit.innerHTML = " °C";
+    button.innerHTML = "°C to °F";
+  }
+
+  // Runs search
+  let requestedCity = document.querySelector("#search-input");
   search(requestedCity.value);
 }
 
