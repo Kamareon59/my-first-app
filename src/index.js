@@ -25,13 +25,17 @@ let time = document.querySelector("#time");
 time.innerHTML = `${hours}:${minutes}`;
 
 // SEARCH ENGINE
-function search(event) {
+function handleInput(event) {
   event.preventDefault();
   let requestedCity = document.querySelector("#search-input");
 
-  let unit = "metric";
+  search(requestedCity.value);
+}
+
+function search(city) {
+  let units = "metric";
   let apiKey = "047115c33e71aaba35be74cb69e006be";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${requestedCity.value}&appid=${apiKey}&units=${unit}`;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
 
   axios.get(apiUrl).then(changeWeatherData);
 }
@@ -60,7 +64,7 @@ function changeWeatherData(response) {
 }
 
 let searchEngine = document.querySelector("form");
-searchEngine.addEventListener("submit", search);
+searchEngine.addEventListener("submit", handleInput);
 
 // UNIT CONVERTER
 function convertToF(tempC) {
@@ -119,3 +123,5 @@ function geolocator() {
 
 let currentLocationButton = document.querySelector("#current-button");
 currentLocationButton.addEventListener("click", geolocator);
+
+search("amsterdam");
