@@ -113,4 +113,7 @@ function geolocator() {
 let currentLocationButton = document.querySelector("#current-button");
 currentLocationButton.addEventListener("click", geolocator);
 
+//DEFAULT DATA
 search("amsterdam");
+let searchBar = document.querySelector("#search-input");
+searchBar.value = null;
