@@ -103,18 +103,7 @@ function getGeoData(position) {
   let apiKey = "047115c33e71aaba35be74cb69e006be";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
-  axios.get(apiUrl).then(changeData);
-}
-
-function changeData(response) {
-  let currentCity = document.querySelector("#current-city");
-  let newCity = response.data.name;
-
-  let currentTemp = document.querySelector("#current-temp");
-  let newTemp = Math.round(response.data.main.temp);
-
-  currentTemp.innerHTML = newTemp;
-  currentCity.innerHTML = newCity;
+  axios.get(apiUrl).then(changeWeatherData);
 }
 
 function geolocator() {
