@@ -51,6 +51,9 @@ function search(city) {
 }
 
 function changeWeatherData(response) {
+  let icon = document.querySelector("#icon");
+  icon.setAttribute("src", `/media/icons/${response.data.weather[0].icon}.png`);
+
   let currentCity = document.querySelector("#current-city");
   let requestedCity = response.data.name;
 
@@ -58,7 +61,7 @@ function changeWeatherData(response) {
   let newTemp = Math.round(response.data.main.temp);
 
   let currentDescription = document.querySelector("#description");
-  let newDescription = response.data.weather[0].description;
+  let newDescription = " " + response.data.weather[0].description;
 
   let currentHumidity = document.querySelector("#humidity");
   let newHumidity = `${response.data.main.humidity}% `;
