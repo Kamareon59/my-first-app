@@ -34,17 +34,12 @@ function search(event) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${requestedCity.value}&appid=${apiKey}&units=${unit}`;
 
   axios.get(apiUrl).then(changeWeatherData);
-  axios.get(apiUrl).then(displayCity);
-}
-
-function displayCity(response) {
-  let currentCity = document.querySelector("#current-city");
-  let requestedCity = response.data.name;
-
-  currentCity.innerHTML = requestedCity;
 }
 
 function changeWeatherData(response) {
+  let currentCity = document.querySelector("#current-city");
+  let requestedCity = response.data.name;
+
   let currentTemp = document.querySelector("#current-temp");
   let newTemp = Math.round(response.data.main.temp);
 
@@ -57,6 +52,7 @@ function changeWeatherData(response) {
   let currentWindSpeed = document.querySelector("#wind-speed");
   let newWindSpeed = `${Math.round(response.data.wind.speed)} m/s`;
 
+  currentCity.innerHTML = requestedCity;
   currentTemp.innerHTML = newTemp;
   currentDescription.innerHTML = newDescription;
   currentHumidity.innerHTML = newHumidity;
