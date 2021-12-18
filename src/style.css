@@ -18,7 +18,6 @@ h1 {
   color: #5893d4;
   font-family: "Just Another Hand", cursive;
   font-size: 80px;
-  line-height: 100%;
   letter-spacing: 3px;
 }
 
@@ -26,23 +25,28 @@ h4 {
   text-decoration: underline #f7b634 3px;
 }
 
+h5 {
+  color: #084298;
+}
+
 .btn-light {
   border: 3px solid #fff;
-  box-shadow: 2px 2px 2px #084298;
-  color: #4b94ca;
+  box-shadow: 2px 2px #f7b634;
+  color: #084298;
   font-family: "Just Another Hand", cursive;
-  font-size: 30px;
+  font-size: 26px;
   letter-spacing: 1.5px;
+  line-height: 100%;
 }
 
 .btn-light:hover {
   border: 3px solid #f7b634;
-  color: #084298;
+  color: #5893d4;
   transition: all 120ms ease-in-out;
 }
 
 .btn-light:focus {
-  color: #084298;
+  color: #5893d4;
 }
 
 .card {
@@ -79,7 +83,7 @@ h4 {
 }
 
 #icon {
-  max-width: 30%;
+  max-width: 20%;
   height: auto;
 }
 
