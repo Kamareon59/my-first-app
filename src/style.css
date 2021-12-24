@@ -62,7 +62,7 @@ h5 {
 }
 
 .date-time {
-  padding: 10 5px;
+  padding: 0 7px;
 }
 
 .footer {
@@ -78,12 +78,18 @@ h5 {
 }
 
 #current-unit {
-  font-size: 50px;
+  font-size: 40px;
   color: #5893d4;
+  position: relative;
+  top: -34px;
 }
 
 #description::first-letter {
   text-transform: capitalize;
+}
+
+#forecast {
+  height: 100%;
 }
 
 #main-temp-wrapper {

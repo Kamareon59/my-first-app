@@ -32,8 +32,8 @@ function handleInput(event) {
   let currentUnit = document.querySelector("#current-unit");
   let button = document.querySelector("#converter-button");
 
-  if (currentUnit.innerHTML === " °F") {
-    currentUnit.innerHTML = " °C";
+  if (currentUnit.innerHTML === "°F") {
+    currentUnit.innerHTML = "°C";
     button.innerHTML = "°C to °F";
   }
 
@@ -79,6 +79,32 @@ function changeWeatherData(response) {
 let searchEngine = document.querySelector("form");
 searchEngine.addEventListener("submit", handleInput);
 
+// FORECAST
+function displayForecast() {
+  let forecastElement = document.querySelector("#forecast");
+  let forecastHTML = ``;
+  let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+
+  days.forEach(function (day) {
+    forecastHTML =
+      forecastHTML +
+      `<div class="row justify-content-center">
+                  <div class="col forecast-day">${day}</div>
+                  <div class="col forecast-temps">18° | 14°</div>
+                  <div class="col forecast-icon">
+                    <img
+                      src="media/icons/01d.png"
+                      alt=""
+                      height="20"
+                      weight="20"
+                    />
+                  </div>
+                </div>`;
+  });
+
+  forecastElement.innerHTML = forecastHTML;
+}
+
 // UNIT CONVERTER
 function convertToF(tempC) {
   let tempF = Math.round((tempC * 9) / 5 + 32);
@@ -95,13 +121,13 @@ function convertTemp() {
   let currentTemp = document.querySelector("#current-temp");
   let button = document.querySelector("#converter-button");
 
-  if (currentUnit.innerHTML === " °C") {
+  if (currentUnit.innerHTML === "°C") {
     currentTemp.innerHTML = convertToF(currentTemp.innerHTML);
-    currentUnit.innerHTML = " °F";
+    currentUnit.innerHTML = "°F";
     button.innerHTML = "°F to °C";
   } else {
     currentTemp.innerHTML = convertToC(currentTemp.innerHTML);
-    currentUnit.innerHTML = " °C";
+    currentUnit.innerHTML = "°C";
     button.innerHTML = "°C to °F";
   }
 }
@@ -130,3 +156,5 @@ currentLocationButton.addEventListener("click", geolocator);
 search("amsterdam");
 let searchBar = document.querySelector("#search-input");
 searchBar.value = null;
+
+displayForecast();
