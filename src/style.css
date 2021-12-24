@@ -23,6 +23,8 @@ h1 {
 
 h4 {
   text-decoration: underline #f7b634 3px;
+  color: #084298;
+  line-height: 1.5;
 }
 
 h5 {
@@ -82,7 +84,7 @@ h5 {
   margin-top: 20px;
 }
 
-#icon {
+#main-icon {
   max-width: 20%;
   height: auto;
 }

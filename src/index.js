@@ -51,7 +51,7 @@ function search(city) {
 }
 
 function changeWeatherData(response) {
-  let icon = document.querySelector("#icon");
+  let icon = document.querySelector("#main-icon");
   icon.setAttribute("src", `/media/icons/${response.data.weather[0].icon}.png`);
 
   let currentCity = document.querySelector("#current-city");
