@@ -97,7 +97,6 @@ function displayWeatherData(response) {
 }
 
 function displayForecast(response) {
-  console.log(response.data.daily);
   let forecastData = response.data.daily;
   let forecastHTML = ``;
   let forecastElement = document.querySelector("#forecast");
