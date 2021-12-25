@@ -88,6 +88,11 @@ h5 {
   text-transform: capitalize;
 }
 
+#divider {
+  color: #f7b634;
+  font-weight: 700;
+}
+
 #forecast {
   height: 100%;
 }

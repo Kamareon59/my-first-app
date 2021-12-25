@@ -24,6 +24,14 @@ let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 let time = document.querySelector("#time");
 time.innerHTML = `${hours}:${minutes}`;
 
+// Forecast day display
+function formatTimestamp(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+
+  return weekdays[day];
+}
+
 // SEARCH ENGINE
 function handleInput(event) {
   event.preventDefault();
@@ -42,15 +50,25 @@ function handleInput(event) {
   search(requestedCity.value);
 }
 
+// API Calls
 function search(city) {
   let units = "metric";
   let apiKey = "047115c33e71aaba35be74cb69e006be";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
 
-  axios.get(apiUrl).then(changeWeatherData);
+  axios.get(apiUrl).then(displayWeatherData);
 }
 
-function changeWeatherData(response) {
+function getForecast(coordinates) {
+  let units = "metric";
+  let apiKey = "047115c33e71aaba35be74cb69e006be";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=alerts&appid=${apiKey}&units=${units}`;
+
+  axios.get(apiUrl).then(displayForecast);
+}
+
+// Data display (weather + forecast)
+function displayWeatherData(response) {
   let icon = document.querySelector("#main-icon");
   icon.setAttribute("src", `/media/icons/${response.data.weather[0].icon}.png`);
 
@@ -74,36 +92,44 @@ function changeWeatherData(response) {
   currentDescription.innerHTML = newDescription;
   currentHumidity.innerHTML = newHumidity;
   currentWindSpeed.innerHTML = newWindSpeed;
+
+  getForecast(response.data.coord);
 }
 
-let searchEngine = document.querySelector("form");
-searchEngine.addEventListener("submit", handleInput);
-
-// FORECAST
-function displayForecast() {
-  let forecastElement = document.querySelector("#forecast");
+function displayForecast(response) {
+  console.log(response.data.daily);
+  let forecastData = response.data.daily;
   let forecastHTML = ``;
-  let days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  let forecastElement = document.querySelector("#forecast");
 
-  days.forEach(function (day) {
-    forecastHTML =
-      forecastHTML +
-      `<div class="row justify-content-center">
-                  <div class="col forecast-day">${day}</div>
-                  <div class="col forecast-temps">18° | 14°</div>
-                  <div class="col forecast-icon">
-                    <img
-                      src="media/icons/01d.png"
-                      alt=""
-                      height="20"
-                      weight="20"
-                    />
-                  </div>
-                </div>`;
+  forecastData.forEach(function (forecast, index) {
+    if (index < 5) {
+      forecastHTML =
+        forecastHTML +
+        `<div class="row justify-content-center">
+    <div class="col forecast-day">${formatTimestamp(forecast.dt)}</div>
+    <div class="col forecast-temps">${Math.round(
+      forecast.temp.max
+    )}° <span id="divider">/</span> <span class="text-muted">${Math.round(
+          forecast.temp.min
+        )}°</span></div>
+    <div class="col forecast-icon">
+    <img
+    src="media/icons/${forecast.weather[0].icon}.png"
+    alt=""
+    height="20"
+    weight="20"
+    />
+    </div>
+    </div>`;
+    }
   });
 
   forecastElement.innerHTML = forecastHTML;
 }
+
+let searchEngine = document.querySelector("form");
+searchEngine.addEventListener("submit", handleInput);
 
 // UNIT CONVERTER
 function convertToF(tempC) {
@@ -142,7 +168,7 @@ function getGeoData(position) {
   let apiKey = "047115c33e71aaba35be74cb69e006be";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
-  axios.get(apiUrl).then(changeWeatherData);
+  axios.get(apiUrl).then(displayWeatherData);
 }
 
 function geolocator() {
@@ -152,9 +178,7 @@ function geolocator() {
 let currentLocationButton = document.querySelector("#current-button");
 currentLocationButton.addEventListener("click", geolocator);
 
-//DEFAULT DATA
+// DEFAULT DATA
 search("amsterdam");
 let searchBar = document.querySelector("#search-input");
 searchBar.value = null;
-
-displayForecast();
