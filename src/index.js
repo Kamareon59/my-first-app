@@ -2,7 +2,7 @@
 let date = new Date();
 
 // Day display
-let weekdays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+let weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 let currentDay = weekdays[date.getDay()];
 
 let weekday = document.querySelector("#weekday");
@@ -24,8 +24,8 @@ let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 let time = document.querySelector("#time");
 time.innerHTML = `${hours}:${minutes}`;
 
-// Forecast & Details display
-function formatTimestamp(timestamp) {
+// FORMATTING
+function formatForecastDay(timestamp) {
   let date = new Date(timestamp * 1000);
   let day = date.getDay();
 
@@ -40,35 +40,41 @@ function formatSuntimes(timestamp) {
   return `${hours}:${minutes}`;
 }
 
+function formatUnits() {
+  let currentUnit = document.querySelector("#current-unit");
+
+  if (currentUnit.innerHTML === "°C") {
+    return "m/s";
+  } else {
+    return "m/h";
+  }
+}
+
 // SEARCH ENGINE
 function handleInput(event) {
   event.preventDefault();
 
-  // Resets converter
   let currentUnit = document.querySelector("#current-unit");
-  let button = document.querySelector("#converter-button");
-
-  if (currentUnit.innerHTML === "°F") {
-    currentUnit.innerHTML = "°C";
-    button.innerHTML = "°C to °F";
-  }
-
-  // Runs search
   let requestedCity = document.querySelector("#search-input");
-  search(requestedCity.value);
+
+  if (currentUnit.innerHTML === "°C") {
+    search(requestedCity.value, "metric");
+  } else {
+    search(requestedCity.value, "imperial");
+  }
 }
 
 // API Calls
-function search(city) {
-  let units = "metric";
+function search(city, units) {
   let apiKey = "047115c33e71aaba35be74cb69e006be";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
 
-  axios.get(apiUrl).then(displayWeatherData);
+  axios.get(apiUrl).then(function success(response) {
+    displayWeatherData(response, units);
+  });
 }
 
-function getForecast(coordinates) {
-  let units = "metric";
+function getForecast(coordinates, units) {
   let apiKey = "047115c33e71aaba35be74cb69e006be";
   let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&exclude=alerts&appid=${apiKey}&units=${units}`;
 
@@ -76,8 +82,9 @@ function getForecast(coordinates) {
 }
 
 // Data display (Weather, Forecast, Details)
-function displayWeatherData(response) {
+function displayWeatherData(response, units) {
   displayDetails(response);
+  getForecast(response.data.coord, units);
 
   let icon = document.querySelector("#main-icon");
   icon.setAttribute("src", `/media/icons/${response.data.weather[0].icon}.png`);
@@ -98,7 +105,7 @@ function displayWeatherData(response) {
   let newHumidity = `${response.data.main.humidity}% `;
 
   let currentWindSpeed = document.querySelector("#wind");
-  let newWindSpeed = `${Math.round(response.data.wind.speed)} m/s`;
+  let newWindSpeed = `${Math.round(response.data.wind.speed)} ${formatUnits()}`;
 
   let currentSunrise = document.querySelector("#sunrise");
   let newSunrise = formatSuntimes(response.data.sys.sunrise);
@@ -114,8 +121,6 @@ function displayWeatherData(response) {
   currentWindSpeed.innerHTML = newWindSpeed;
   currentSunrise.innerHTML = newSunrise;
   currentSunset.innerHTML = newSunset;
-
-  getForecast(response.data.coord);
 }
 
 function displayForecast(response) {
@@ -128,13 +133,13 @@ function displayForecast(response) {
       forecastHTML =
         forecastHTML +
         `<div class="row justify-content-center">
-    <div class="col forecast-day">${formatTimestamp(forecast.dt)}</div>
-    <div class="col forecast-temps">${Math.round(
+    <div class="col forecast-day">${formatForecastDay(forecast.dt)}</div>
+    <div class="col forecast-temps"><span class="forecast-max">${Math.round(
       forecast.temp.max
-    )}° <span id="divider">/</span> <span class="text-muted">${Math.round(
+    )}</span>° <span id="divider">/</span> <span class="forecast-min text-muted">${Math.round(
           forecast.temp.min
-        )}°</span></div>
-    <div class="col forecast-icon">
+        )}</span>°</div>
+    <div class="col">
     <img
     src="media/icons/${forecast.weather[0].icon}.png"
     alt=""
@@ -151,7 +156,7 @@ function displayForecast(response) {
 
 function formatDetails(item) {
   if (item === "feelslike") {
-    item = "Feels like";
+    item = "feels like";
     return item;
   } else {
     return item;
@@ -159,7 +164,6 @@ function formatDetails(item) {
 }
 
 function displayDetails(response) {
-  // let detailsData = response.data;
   let detailsHTML = ``;
   let detailsElement = document.querySelector("#details");
 
@@ -186,34 +190,24 @@ let searchEngine = document.querySelector("form");
 searchEngine.addEventListener("submit", handleInput);
 
 // UNIT CONVERTER
-function convertToF(tempC) {
-  let tempF = Math.round((tempC * 9) / 5 + 32);
-  return tempF;
-}
-
-function convertToC(tempF) {
-  let tempC = Math.round(((tempF - 32) * 5) / 9);
-  return tempC;
-}
-
-function convertTemp() {
+function convertUnits() {
   let currentUnit = document.querySelector("#current-unit");
-  let currentTemp = document.querySelector("#current-temp");
+  let currentCity = document.querySelector("#current-city");
   let button = document.querySelector("#converter-button");
 
   if (currentUnit.innerHTML === "°C") {
-    currentTemp.innerHTML = convertToF(currentTemp.innerHTML);
+    search(currentCity.innerHTML, "imperial");
     currentUnit.innerHTML = "°F";
-    button.innerHTML = "°F to °C";
+    button.innerHTML = "Metric";
   } else {
-    currentTemp.innerHTML = convertToC(currentTemp.innerHTML);
+    search(currentCity.innerHTML, "metric");
     currentUnit.innerHTML = "°C";
-    button.innerHTML = "°C to °F";
+    button.innerHTML = "Imperial";
   }
 }
 
 let converterButton = document.querySelector("#converter-button");
-converterButton.addEventListener("click", convertTemp);
+converterButton.addEventListener("click", convertUnits);
 
 // CURRENT LOCATION
 function getGeoData(position) {
@@ -233,6 +227,6 @@ let currentLocationButton = document.querySelector("#current-button");
 currentLocationButton.addEventListener("click", geolocator);
 
 // DEFAULT DATA
-search("amsterdam");
+search("amsterdam", "metric");
 let searchBar = document.querySelector("#search-input");
 searchBar.value = null;
