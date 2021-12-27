@@ -138,8 +138,8 @@ function displayForecast(response) {
     <img
     src="media/icons/${forecast.weather[0].icon}.png"
     alt=""
-    height="20"
-    weight="20"
+    height="25"
+    weight="25"
     />
     </div>
     </div>`;
@@ -161,12 +161,12 @@ function displayDetails(response) {
       detailsHTML +
       `<div class="row justify-content-center">
   <div class="col">
-    <img src="#" alt="" height="20" weight="20" />
+    <img src="media/icons/${item}.png" alt="" height="25" weight="25" />
   </div>
   <div class="col">
     <span id="${item}"></span>
   </div>
-  <div class="col"><span class="detail-items">${item}</span></div>
+  <div class="col detail-items">${item}</div>
 </div>`;
   });
 
