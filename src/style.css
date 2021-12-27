@@ -88,13 +88,18 @@ h5 {
   text-transform: capitalize;
 }
 
+.detail-items::first-letter {
+  text-transform: capitalize;
+}
+
 #divider {
   color: #f7b634;
   font-weight: 700;
 }
 
-#forecast {
-  height: 100%;
+#forecast,
+#details {
+  line-height: 2;
 }
 
 #main-temp-wrapper {

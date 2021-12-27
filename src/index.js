@@ -24,12 +24,20 @@ let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 let time = document.querySelector("#time");
 time.innerHTML = `${hours}:${minutes}`;
 
-// Forecast day display
+// Forecast & Details display
 function formatTimestamp(timestamp) {
   let date = new Date(timestamp * 1000);
   let day = date.getDay();
 
   return weekdays[day];
+}
+
+function formatSuntimes(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let hours = date.getHours();
+  let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+
+  return `${hours}:${minutes}`;
 }
 
 // SEARCH ENGINE
@@ -67,8 +75,10 @@ function getForecast(coordinates) {
   axios.get(apiUrl).then(displayForecast);
 }
 
-// Data display (weather + forecast)
+// Data display (Weather, Forecast, Details)
 function displayWeatherData(response) {
+  displayDetails(response);
+
   let icon = document.querySelector("#main-icon");
   icon.setAttribute("src", `/media/icons/${response.data.weather[0].icon}.png`);
 
@@ -79,19 +89,31 @@ function displayWeatherData(response) {
   let newTemp = Math.round(response.data.main.temp);
 
   let currentDescription = document.querySelector("#description");
-  let newDescription = " " + response.data.weather[0].description;
+  let newDescription = response.data.weather[0].description;
+
+  let currentFeels = document.querySelector("#feelslike");
+  let newFeels = `${Math.round(response.data.main.feels_like)}°`;
 
   let currentHumidity = document.querySelector("#humidity");
   let newHumidity = `${response.data.main.humidity}% `;
 
-  let currentWindSpeed = document.querySelector("#wind-speed");
+  let currentWindSpeed = document.querySelector("#wind");
   let newWindSpeed = `${Math.round(response.data.wind.speed)} m/s`;
+
+  let currentSunrise = document.querySelector("#sunrise");
+  let newSunrise = formatSuntimes(response.data.sys.sunrise);
+
+  let currentSunset = document.querySelector("#sunset");
+  let newSunset = formatSuntimes(response.data.sys.sunset);
 
   currentCity.innerHTML = requestedCity;
   currentTemp.innerHTML = newTemp;
   currentDescription.innerHTML = newDescription;
+  currentFeels.innerHTML = newFeels;
   currentHumidity.innerHTML = newHumidity;
   currentWindSpeed.innerHTML = newWindSpeed;
+  currentSunrise.innerHTML = newSunrise;
+  currentSunset.innerHTML = newSunset;
 
   getForecast(response.data.coord);
 }
@@ -125,6 +147,30 @@ function displayForecast(response) {
   });
 
   forecastElement.innerHTML = forecastHTML;
+}
+
+function displayDetails(response) {
+  // let detailsData = response.data;
+  let detailsHTML = ``;
+  let detailsElement = document.querySelector("#details");
+
+  let details = ["feelslike", "humidity", "wind", "sunrise", "sunset"];
+
+  details.forEach(function (item) {
+    detailsHTML =
+      detailsHTML +
+      `<div class="row justify-content-center">
+  <div class="col">
+    <img src="#" alt="" height="20" weight="20" />
+  </div>
+  <div class="col">
+    <span id="${item}"></span>
+  </div>
+  <div class="col"><span class="detail-items">${item}</span></div>
+</div>`;
+  });
+
+  detailsElement.innerHTML = detailsHTML;
 }
 
 let searchEngine = document.querySelector("form");
