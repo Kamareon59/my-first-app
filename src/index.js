@@ -149,6 +149,15 @@ function displayForecast(response) {
   forecastElement.innerHTML = forecastHTML;
 }
 
+function formatDetails(item) {
+  if (item === "feelslike") {
+    item = "Feels like";
+    return item;
+  } else {
+    return item;
+  }
+}
+
 function displayDetails(response) {
   // let detailsData = response.data;
   let detailsHTML = ``;
@@ -160,13 +169,13 @@ function displayDetails(response) {
     detailsHTML =
       detailsHTML +
       `<div class="row justify-content-center">
-  <div class="col">
+  <div class="col px-0">
     <img src="media/icons/${item}.png" alt="" height="25" weight="25" />
   </div>
-  <div class="col">
+  <div class="col px-1">
     <span id="${item}"></span>
   </div>
-  <div class="col detail-items">${item}</div>
+  <div class="col px-1 detail-items">${formatDetails(item)}</div>
 </div>`;
   });
 
