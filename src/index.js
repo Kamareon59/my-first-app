@@ -50,6 +50,15 @@ function formatUnits() {
   }
 }
 
+function formatDetails(item) {
+  if (item === "feelslike") {
+    item = "feels like";
+    return item;
+  } else {
+    return item;
+  }
+}
+
 // SEARCH ENGINE
 function handleInput(event) {
   event.preventDefault();
@@ -154,15 +163,6 @@ function displayForecast(response) {
   forecastElement.innerHTML = forecastHTML;
 }
 
-function formatDetails(item) {
-  if (item === "feelslike") {
-    item = "feels like";
-    return item;
-  } else {
-    return item;
-  }
-}
-
 function displayDetails(response) {
   let detailsHTML = ``;
   let detailsElement = document.querySelector("#details");
@@ -213,10 +213,21 @@ converterButton.addEventListener("click", convertUnits);
 function getGeoData(position) {
   let lat = position.coords.latitude;
   let lon = position.coords.longitude;
-  let apiKey = "047115c33e71aaba35be74cb69e006be";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  let currentUnit = document.querySelector("#current-unit");
+  let units = null;
 
-  axios.get(apiUrl).then(displayWeatherData);
+  if (currentUnit.innerHTML === "°C") {
+    units = "metric";
+  } else {
+    units = "imperial";
+  }
+
+  let apiKey = "047115c33e71aaba35be74cb69e006be";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
+
+  axios.get(apiUrl).then(function success(response) {
+    displayWeatherData(response, units);
+  });
 }
 
 function geolocator() {
