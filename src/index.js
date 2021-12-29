@@ -282,7 +282,7 @@ function displayRandomLocation(response) {
 }
 
 let randomLocationButton = document.querySelector("#random-button");
-randomLocationButton.addEventListener("click", randomizer);
+// randomLocationButton.addEventListener("click", randomizer);
 
 // DEFAULT DATA
 search("amsterdam", "metric");
