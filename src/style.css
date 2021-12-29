@@ -61,6 +61,12 @@ h5 {
   height: 100%;
 }
 
+.copyright {
+  text-align: center;
+  color: #084298;
+  font-size: 12px;
+}
+
 .date-time {
   padding: 0 7px;
 }
