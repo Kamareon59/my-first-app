@@ -78,9 +78,14 @@ function search(city, units) {
   let apiKey = "047115c33e71aaba35be74cb69e006be";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
 
-  axios.get(apiUrl).then(function success(response) {
-    displayWeatherData(response, units);
-  });
+  axios
+    .get(apiUrl)
+    .then(function success(response) {
+      displayWeatherData(response, units);
+    })
+    .catch(function (error) {
+      randomizer();
+    });
 }
 
 function getForecast(coordinates, units) {
@@ -198,11 +203,11 @@ function convertUnits() {
   if (currentUnit.innerHTML === "°C") {
     search(currentCity.innerHTML, "imperial");
     currentUnit.innerHTML = "°F";
-    button.innerHTML = "Metric";
+    button.innerHTML = "Metric units";
   } else {
     search(currentCity.innerHTML, "metric");
     currentUnit.innerHTML = "°C";
-    button.innerHTML = "Imperial";
+    button.innerHTML = "Imperial units";
   }
 }
 
@@ -236,6 +241,48 @@ function geolocator() {
 
 let currentLocationButton = document.querySelector("#current-button");
 currentLocationButton.addEventListener("click", geolocator);
+
+// RANDOM LOCATION
+// Latitude (-90 to +90)
+function latitudeGenerator() {
+  let lat = (Math.random() * 90).toFixed(3) * 1;
+  let posorneg = Math.floor(Math.random());
+  if (posorneg === 0) {
+    lat = lat * -1;
+  }
+  return lat;
+}
+
+// Longitude (-180 to + 180)
+function longitudeGenerator() {
+  let lon = (Math.random() * 180).toFixed(3) * 1;
+  let posorneg = Math.floor(Math.random());
+  if (posorneg === 0) {
+    lon = lon * -1;
+  }
+  return lon;
+}
+
+function randomizer() {
+  let lat = latitudeGenerator();
+  let lon = longitudeGenerator();
+
+  let apiKey = "047115c33e71aaba35be74cb69e006be";
+  let apiUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=10&appid=${apiKey}`;
+
+  axios.get(apiUrl).then(displayRandomLocation);
+}
+
+function displayRandomLocation(response) {
+  if (response.data[0] !== undefined) {
+    search(response.data[0].name, "metric");
+  } else {
+    randomizer();
+  }
+}
+
+let randomLocationButton = document.querySelector("#random-button");
+randomLocationButton.addEventListener("click", randomizer);
 
 // DEFAULT DATA
 search("amsterdam", "metric");
