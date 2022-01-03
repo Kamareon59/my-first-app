@@ -15,7 +15,9 @@ let months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 let currentMonth = months[date.getMonth()];
 
 let fulldate = document.querySelector("#fulldate");
-fulldate.innerHTML = `${dayDate}/${currentMonth}/${date.getFullYear()}`;
+fulldate.innerHTML = `${dayDate}/${
+  (currentMonth < 10 ? "0" : "") + currentMonth
+}/${date.getFullYear()}`;
 
 // Time display
 let hours = date.getHours();
