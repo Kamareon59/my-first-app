@@ -24,7 +24,7 @@ let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 let time = document.querySelector("#time");
 time.innerHTML = `${hours}:${minutes}`;
 
-// FORMATTING
+// GENERAL FORMATTING
 function formatForecastDay(timestamp) {
   let date = new Date(timestamp * 1000);
   let day = date.getDay();
@@ -32,11 +32,11 @@ function formatForecastDay(timestamp) {
   return weekdays[day];
 }
 
-function formatSuntimes(timestamp) {
-  let date = new Date(timestamp * 1000);
-  let hours = date.getHours();
+function formatSuntimes(timestamp, timezone) {
+  let adjustedTimestamp = (timestamp + timezone) * 1000;
+  let date = new Date(adjustedTimestamp);
+  let hours = date.getUTCHours();
   let minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
-
   return `${hours}:${minutes}`;
 }
 
@@ -95,7 +95,7 @@ function getForecast(coordinates, units) {
   axios.get(apiUrl).then(displayForecast);
 }
 
-// Data display (Weather, Forecast, Details)
+// Data display (Main weather, Forecast, Details)
 function displayWeatherData(response, units) {
   displayDetails(response);
   getForecast(response.data.coord, units);
@@ -122,10 +122,16 @@ function displayWeatherData(response, units) {
   let newWindSpeed = `${Math.round(response.data.wind.speed)} ${formatUnits()}`;
 
   let currentSunrise = document.querySelector("#sunrise");
-  let newSunrise = formatSuntimes(response.data.sys.sunrise);
+  let newSunrise = formatSuntimes(
+    response.data.sys.sunrise,
+    response.data.timezone
+  );
 
   let currentSunset = document.querySelector("#sunset");
-  let newSunset = formatSuntimes(response.data.sys.sunset);
+  let newSunset = formatSuntimes(
+    response.data.sys.sunset,
+    response.data.timezone
+  );
 
   currentCity.innerHTML = requestedCity;
   currentTemp.innerHTML = newTemp;
@@ -282,7 +288,7 @@ function displayRandomLocation(response) {
 }
 
 let randomLocationButton = document.querySelector("#random-button");
-// randomLocationButton.addEventListener("click", randomizer);
+randomLocationButton.addEventListener("click", randomizer);
 
 // DEFAULT DATA
 search("amsterdam", "metric");
